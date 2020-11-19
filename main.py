@@ -1,4 +1,5 @@
 import requests
+import csv
 from bs4 import BeautifulSoup
 
 
@@ -8,10 +9,11 @@ URL = 'https://www.yakaboo.ua/ua/biologija-kompleksna-pidgotovka-do-zno.html'
 
 HEADERS = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36', 'accept': '*/*'}
 
+FILE = 'product.csv'
+
 def get_html(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
     return r
-
 
 def get_breadcrumb(breadcrumb):
     breadcrumbs = []
@@ -74,6 +76,22 @@ def get_images(modal_product_media_block):
         break
 
 
+def save_file(item, path):
+    with open(path, 'w', newline='') as file:
+        writer = csv.writer(file, delimiter=';')
+
+        headers_file = ['Назва', 'Ціна', 'Опис']
+        line_item = [item['name'], item['price'], item['description']]
+
+        for char in item['characteristics']:
+            headers_file.append(char['name'])
+            line_item.append(char['value'])
+
+        writer.writerow(headers_file)
+        writer.writerow(line_item)
+
+
+
 def get_content(html):
     soap = BeautifulSoup(html, 'html.parser')
 
@@ -95,6 +113,15 @@ def get_content(html):
     description = get_description(description_block)
     price = get_price(price_block)
 
+    product = {
+        'name': product_name,
+        'description': description,
+        'price': price['old_price'],
+        'characteristics': characteristics
+    }
+
+    return product
+
     # get_images(modal_product_media_block)
 
 
@@ -103,7 +130,8 @@ def parse():
     html = get_html(URL)
     if html.status_code == 200:
 
-        get_content(html.text)
+        product = get_content(html.text)
+        save_file(product, FILE)
 
     else: 
         print('EROOR')
