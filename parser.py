@@ -72,11 +72,6 @@ class Parser:
 
             characteristics[key] = params[1].get_text(strip=True)
 
-            # characteristics.append({
-            #     'name': params[0].get_text(strip=True),
-            #     'value': params[1].get_text(strip=True),
-            # })
-
         return characteristics
             
     def get_images(self, modal_product_media_block):
@@ -92,17 +87,11 @@ class Parser:
 
     def get_content(self, html):
         soap = BeautifulSoup(html, 'html.parser')
-
         container = soap.find('div', class_='wrapper')
-
         attributes_block = container.find('div', class_='product-attributes').find_all('tr')
-
         breadcrumb_block = container.find('ul', class_='breadcrumb')
-
         description_block = container.find('div', class_='big-description')
-
         price_block = container.find('div', class_='price-box')
-
         modal_product_media_block = soap.find('div', class_='modal_product-media')
 
         product_name = container.find('div', class_='product-name').get_text()
@@ -113,12 +102,12 @@ class Parser:
         images = self.get_images(modal_product_media_block)
 
         product = {
-        'name': product_name,
-        'breadcrumbs': breadcrumbs,
-        'description': description,
-        'price': price,
-        'characteristics': characteristics,
-        'images': images
+            'name': product_name,
+            'breadcrumbs': breadcrumbs,
+            'description': description,
+            'price': price,
+            'characteristics': characteristics,
+            'images': images
         }
 
         return product
