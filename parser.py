@@ -94,7 +94,7 @@ class Parser:
         price_block = container.find('div', class_='price-box')
         modal_product_media_block = soap.find('div', class_='modal_product-media')
 
-        product_name = container.find('div', class_='product-name').get_text()
+        product_name = container.find('div', class_='product-name').get_text() #todo
         breadcrumbs = self.get_breadcrumb(breadcrumb_block)
         characteristics = self.get_characteristics(attributes_block)
         description = self.get_description(description_block)

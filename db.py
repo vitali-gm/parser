@@ -8,10 +8,10 @@ import mysql.connector
 
 try:
     mydb = mysql.connector.connect(
-    host = "77.83.100.110",
-    user = "slrlvbsp_devbasic",
-    password = "DEVbasic121413!!",
-    database = "slrlvbsp_wp598"
+        host = "77.83.100.110",
+        user = "slrlvbsp_devbasic",
+        password = "DEVbasic121413!!",
+        database = "slrlvbsp_wp598"
 )
 
     print(mydb)
