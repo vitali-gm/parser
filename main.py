@@ -2,7 +2,7 @@ import csv
 from parser import Parser
 
 
-URLS = ['https://www.yakaboo.ua/ua/lis-timko-ta-jogo-sad.html']
+URLS = ['https://www.yakaboo.ua/ua/goluboe-salo.html']
 FILE = 'product.csv'
 
 def save_file(items, path):
@@ -25,11 +25,9 @@ def save_file(items, path):
 
 products = []
 parser = Parser()
-i = 1
 for url in URLS:
     product = parser.get_html(url)
     print(product)
-    products.append(product)
-    print('Number product ' + str(i))
-    i += 1
+    # products.append(product)
+
 # save_file(products, FILE)

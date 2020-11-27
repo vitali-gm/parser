@@ -23,7 +23,9 @@ class Parser:
         return breadcrumbs
 
     def get_description(self, description_block):
-        return description_block.find('div', class_='description-shadow').get_text(strip=True)
+        if description_block != None: 
+            return description_block.find('div', class_='description-shadow').get_text(strip=True)
+        return None
 
     def get_price_with_block(self, price_block):
         block = price_block.find('span', class_='price')
@@ -31,20 +33,21 @@ class Parser:
         return price
 
     def get_price(self, price_block):
-        regular_price_block = price_block.find('span', class_='regular-price')
+        if price_block != None:
+            regular_price_block = price_block.find('span', class_='regular-price')
 
-        if regular_price_block != None:
-            price = self.get_price_with_block(regular_price_block)
-            return {'price': price}
-        else:
-            old_price_block = price_block.find('p', class_='old-price')
-            old_price = self.get_price_with_block(old_price_block)
+            if regular_price_block != None:
+                price = self.get_price_with_block(regular_price_block)
+                return {'price': price}
+            else:
+                old_price_block = price_block.find('p', class_='old-price')
+                old_price = self.get_price_with_block(old_price_block)
 
-            special_price_block = price_block.find('p', class_='special-price')
-            special_price = self.get_price_with_block(special_price_block)
+                special_price_block = price_block.find('p', class_='special-price')
+                special_price = self.get_price_with_block(special_price_block)
 
-            
-            return {'old_price': old_price, 'price': special_price}
+                
+                return {'old_price': old_price, 'price': special_price}
             
     def get_characteristics(self, attributes_block):
 
@@ -80,17 +83,19 @@ class Parser:
         return None
             
     def get_images(self, modal_product_media_block):
-        lists = modal_product_media_block.find('ul', class_='media-content')
-        images_tags = lists.find_all('img')
+        if modal_product_media_block != None:
+            lists = modal_product_media_block.find('ul', class_='media-content')
+            images_tags = lists.find_all('img')
 
-        images = []
+            images = []
 
-        for image in images_tags:
-            images.append(image.get('data-original'))
+            for image in images_tags:
+                images.append(image.get('data-original'))
 
-        return images
+            return images
 
     def get_content(self, html):
+        #todo if open valid page
         soap = BeautifulSoup(html, 'html.parser')
         container = soap.find('div', class_='wrapper')
         attributes_block = container.find('div', class_='product-attributes')
