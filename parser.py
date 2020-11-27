@@ -88,7 +88,7 @@ class Parser:
     def get_content(self, html):
         soap = BeautifulSoup(html, 'html.parser')
         container = soap.find('div', class_='wrapper')
-        attributes_block = container.find('div', class_='product-attributes').find_all('tr')
+        attributes_block = container.find('div', class_='product-attributes').find_all('tr') #todo
         breadcrumb_block = container.find('ul', class_='breadcrumb')
         description_block = container.find('div', class_='big-description')
         price_block = container.find('div', class_='price-box')
