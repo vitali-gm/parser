@@ -97,27 +97,31 @@ class Parser:
     def get_content(self, html):
         #todo if open valid page
         soap = BeautifulSoup(html, 'html.parser')
-        container = soap.find('div', class_='wrapper')
-        attributes_block = container.find('div', class_='product-attributes')
-        breadcrumb_block = container.find('ul', class_='breadcrumb')
-        description_block = container.find('div', class_='big-description')
-        price_block = container.find('div', class_='price-box')
         modal_product_media_block = soap.find('div', class_='modal_product-media')
 
-        product_name = container.find('div', class_='product-name').get_text() #todo
-        breadcrumbs = self.get_breadcrumb(breadcrumb_block)
-        characteristics = self.get_characteristics(attributes_block)
-        description = self.get_description(description_block)
-        price = self.get_price(price_block)
-        images = self.get_images(modal_product_media_block)
+        if modal_product_media_block != None:
+            container = soap.find('div', class_='wrapper')
+            attributes_block = container.find('div', class_='product-attributes')
+            breadcrumb_block = container.find('ul', class_='breadcrumb')
+            description_block = container.find('div', class_='big-description')
+            price_block = container.find('div', class_='price-box')
+            # modal_product_media_block = soap.find('div', class_='modal_product-media')
 
-        product = {
-            'name': product_name,
-            'breadcrumbs': breadcrumbs,
-            'description': description,
-            'price': price,
-            'characteristics': characteristics,
-            'images': images
-        }
+            product_name = container.find('div', class_='product-name').get_text() #todo
+            breadcrumbs = self.get_breadcrumb(breadcrumb_block)
+            characteristics = self.get_characteristics(attributes_block)
+            description = self.get_description(description_block)
+            price = self.get_price(price_block)
+            images = self.get_images(modal_product_media_block)
 
-        return product
+            product = {
+                'name': product_name,
+                'breadcrumbs': breadcrumbs,
+                'description': description,
+                'price': price,
+                'characteristics': characteristics,
+                'images': images
+            }
+
+            return product
+        return None

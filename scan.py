@@ -44,12 +44,12 @@ if html.status_code == 200:
                             for item in items_tags:
                                 print(item.find('a').get('href'))
                                 product = parser.get_html(item.find('a').get('href'))
-                                # print(product['name'])
-                                ch = product['characteristics']
-                                line_product = [product['name'], product['price'].get('old_price', ''), product['price']['price'], product['description'], ch.get('avtor', ''), ch.get('edition', ''), 
-                                ch.get('series_book', ''), ch.get('lang', ''), ch.get('publish_year', ''), ch.get('age', ''), ch.get('count_pages', ''), ch.get('illustrations', '')]
+                                if product != None:
+                                    ch = product['characteristics']
+                                    line_product = [product['name'], product['price'].get('old_price', ''), product['price']['price'], product['description'], ch.get('avtor', ''), ch.get('edition', ''), 
+                                    ch.get('series_book', ''), ch.get('lang', ''), ch.get('publish_year', ''), ch.get('age', ''), ch.get('count_pages', ''), ch.get('illustrations', '')]
 
-                                for image in product['images']:
-                                    line_product.append(image)
-                                
-                                writer.writerow(line_product)
+                                    for image in product['images']:
+                                        line_product.append(image)
+                                    
+                                    writer.writerow(line_product)
