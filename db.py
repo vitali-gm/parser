@@ -1,18 +1,16 @@
-# host: 77.83.100.110
-# db_name: slrlvbsp_wp598
-# db_user: slrlvbsp_devbasic
-# pass : DEVbasic121413!!
-
-# логин: slrlvbsp_wp598 и пароль 03121980
 import mysql.connector
+import configparser
+
+config = configparser.ConfigParser()
+config.read("settings.ini")
 
 try:
     mydb = mysql.connector.connect(
-        host = "77.83.100.110",
-        user = "slrlvbsp_devbasic",
-        password = "DEVbasic121413!!",
-        database = "slrlvbsp_wp598"
-)
+        host = config["DB"]["host"],
+        user = config["DB"]["user"],
+        password = config["DB"]["password"],
+        database = config["DB"]["database"]
+    )
 
     print(mydb)
 except ValueError:

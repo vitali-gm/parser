@@ -46,33 +46,38 @@ class Parser:
             
             return {'old_price': old_price, 'price': special_price}
             
-    def get_characteristics(self, attributes):
-        characteristics = {}
+    def get_characteristics(self, attributes_block):
 
-        for item in attributes:
-            params = item.find_all('td')
+        if attributes_block != None:
+            attributes = attributes_block.find_all('tr')
 
-            key = ''
-            if params[0].get_text(strip=True) == 'Автор':
-                key = 'avtor'
-            elif params[0].get_text(strip=True) == 'Видавництво':
-                key = 'edition'
-            elif params[0].get_text(strip=True) == 'Серія книг':
-                key = 'series_book'
-            elif params[0].get_text(strip=True) == 'Мова':
-                key = 'lang'
-            elif params[0].get_text(strip=True) == 'Рік видання':
-                key = 'publish_year'
-            elif params[0].get_text(strip=True) == 'Вік':
-                key = 'age'
-            elif params[0].get_text(strip=True) == 'Кількість сторінок':
-                key = 'count_pages'
-            elif params[0].get_text(strip=True) == 'Ілюстрації':
-                key = 'illustrations'
+            characteristics = {}
 
-            characteristics[key] = params[1].get_text(strip=True)
+            for item in attributes:
+                params = item.find_all('td')
 
-        return characteristics
+                key = ''
+                if params[0].get_text(strip=True) == 'Автор':
+                    key = 'avtor'
+                elif params[0].get_text(strip=True) == 'Видавництво':
+                    key = 'edition'
+                elif params[0].get_text(strip=True) == 'Серія книг':
+                    key = 'series_book'
+                elif params[0].get_text(strip=True) == 'Мова':
+                    key = 'lang'
+                elif params[0].get_text(strip=True) == 'Рік видання':
+                    key = 'publish_year'
+                elif params[0].get_text(strip=True) == 'Вік':
+                    key = 'age'
+                elif params[0].get_text(strip=True) == 'Кількість сторінок':
+                    key = 'count_pages'
+                elif params[0].get_text(strip=True) == 'Ілюстрації':
+                    key = 'illustrations'
+
+                characteristics[key] = params[1].get_text(strip=True)
+
+            return characteristics
+        return None
             
     def get_images(self, modal_product_media_block):
         lists = modal_product_media_block.find('ul', class_='media-content')
@@ -88,7 +93,7 @@ class Parser:
     def get_content(self, html):
         soap = BeautifulSoup(html, 'html.parser')
         container = soap.find('div', class_='wrapper')
-        attributes_block = container.find('div', class_='product-attributes').find_all('tr') #todo
+        attributes_block = container.find('div', class_='product-attributes')
         breadcrumb_block = container.find('ul', class_='breadcrumb')
         description_block = container.find('div', class_='big-description')
         price_block = container.find('div', class_='price-box')
