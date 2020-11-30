@@ -28,9 +28,11 @@ class Parser:
         return None
 
     def get_price_with_block(self, price_block):
-        block = price_block.find('span', class_='price')
-        price = block.find_all('span')[0].get_text(strip=True)
-        return price
+        if price_block != None:
+            block = price_block.find('span', class_='price')
+            price = block.find_all('span')[0].get_text(strip=True)
+            return price
+        return None
 
     def get_price(self, price_block):
         if price_block != None:
