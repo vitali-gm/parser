@@ -23,7 +23,7 @@ if html.status_code == 200:
 
     with open('product.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter=';')
-        headers_file = ['id', 'category1', 'category2', 'category3', 'category4', 'name', 'desc', 'regular_price', 'price', 'authot', 'edition', 'series_book', 'lang', 'publish_year', 'age', 'count_pages', 'illustrations']
+        headers_file = ['id', 'href', 'path', 'category1', 'category2', 'category3', 'category4', 'name', 'desc', 'regular_price', 'price', 'authot', 'edition', 'series_book', 'lang', 'publish_year', 'age', 'count_pages', 'illustrations']
         for i in range(30):
             headers_file.append('thumbnail' + str(i + 1))
         writer.writerow(headers_file)
@@ -52,12 +52,15 @@ if html.status_code == 200:
                             items_tags = container.find_all('div', class_='content')
                             urls = []
                             for item in items_tags:
-                                print(item.find('a').get('href'))
-                                product = parser.get_html(item.find('a').get('href'))
+                                href = item.find('a').get('href') 
+                                print(str((number_id - 6799)) + " | " + href)
+                                product = parser.get_html(href)
                                 if product != None:
+                                    split_href = href.split("/")
+                                    path = split_href[len(split_href) - 1]
                                     ch = product['characteristics']
                                     breadcrumbs = product['breadcrumbs']
-                                    line_item = [number_id, get_breadcrumb(breadcrumbs, 2), get_breadcrumb(breadcrumbs, 3), get_breadcrumb(breadcrumbs, 4), get_breadcrumb(breadcrumbs, 5), product['name'], product['description'], product['price']['old_price'], product['price']['price'], ch.get('avtor', ''), ch.get('edition', ''), 
+                                    line_item = [number_id, href, path, get_breadcrumb(breadcrumbs, 2), get_breadcrumb(breadcrumbs, 3), get_breadcrumb(breadcrumbs, 4), get_breadcrumb(breadcrumbs, 5), product['name'], product['description'], product['price']['old_price'], product['price']['price'], ch.get('avtor', ''), ch.get('edition', ''), 
                                     ch.get('series_book', ''), ch.get('lang', ''), ch.get('publish_year', ''), ch.get('age', ''), ch.get('count_pages', ''), ch.get('illustrations', '')]
 
                                     for image in product['images']:
