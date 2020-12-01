@@ -4,6 +4,12 @@ import math
 from parser import Parser
 import csv
 
+def get_breadcrumb(breadcrumbs, key):
+    if key <len(breadcrumbs):
+        return breadcrumbs[key]
+    return ""
+
+
 #todo refactor
 headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36', 'accept': '*/*'}
 
@@ -17,8 +23,12 @@ if html.status_code == 200:
 
     with open('product.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter=';')
-        headers_file = ['Назва', 'Стара ціна', 'Ціна', 'Опис', 'Автор', 'Видавництво', 'Серія книг', 'Мова', 'Рік видання', 'Вік', 'Кількість сторінок', 'Ілюстрації']
+        headers_file = ['id', 'category1', 'category2', 'category3', 'category4', 'name', 'desc', 'regular_price', 'price', 'authot', 'edition', 'series_book', 'lang', 'publish_year', 'age', 'count_pages', 'illustrations']
+        for i in range(30):
+            headers_file.append('thumbnail' + str(i + 1))
         writer.writerow(headers_file)
+
+        number_id = 6800
     
         for a in list_block.find_all('a'):
             html = requests.get(a.get('href'), headers=headers)
@@ -46,10 +56,12 @@ if html.status_code == 200:
                                 product = parser.get_html(item.find('a').get('href'))
                                 if product != None:
                                     ch = product['characteristics']
-                                    line_product = [product['name'], product['price'].get('old_price', ''), product['price']['price'], product['description'], ch.get('avtor', ''), ch.get('edition', ''), 
+                                    breadcrumbs = product['breadcrumbs']
+                                    line_item = [number_id, get_breadcrumb(breadcrumbs, 2), get_breadcrumb(breadcrumbs, 3), get_breadcrumb(breadcrumbs, 4), get_breadcrumb(breadcrumbs, 5), product['name'], product['description'], product['price']['old_price'], product['price']['price'], ch.get('avtor', ''), ch.get('edition', ''), 
                                     ch.get('series_book', ''), ch.get('lang', ''), ch.get('publish_year', ''), ch.get('age', ''), ch.get('count_pages', ''), ch.get('illustrations', '')]
 
                                     for image in product['images']:
-                                        line_product.append(image)
+                                        line_item.append(image)
                                     
-                                    writer.writerow(line_product)
+                                    writer.writerow(line_item)
+                                    number_id += 1

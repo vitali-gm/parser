@@ -40,16 +40,16 @@ class Parser:
 
             if regular_price_block != None:
                 price = self.get_price_with_block(regular_price_block)
-                return {'price': price}
+                return {'old_price': None, 'price': price}
             else:
                 old_price_block = price_block.find('p', class_='old-price')
                 old_price = self.get_price_with_block(old_price_block)
 
                 special_price_block = price_block.find('p', class_='special-price')
                 special_price = self.get_price_with_block(special_price_block)
-
                 
                 return {'old_price': old_price, 'price': special_price}
+        return {'old_price': None, 'price': None}
             
     def get_characteristics(self, attributes_block):
 
