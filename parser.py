@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import datetime
 
 class Parser:
 
@@ -24,7 +25,9 @@ class Parser:
 
     def get_description(self, description_block):
         if description_block != None: 
-            return description_block.find('div', class_='description-shadow').get_text(strip=True)
+            description = description_block.find('div', class_='description-shadow')
+            if description != None:
+                return description.get_text(strip=True)
         return None
 
     def get_price_with_block(self, price_block):
@@ -96,8 +99,23 @@ class Parser:
 
             return images
 
+    def get_availability(self, availability_block):
+        #todo with date
+        if availability_block != None:
+            availability = availability_block.find('span')
+            if availability != None:
+                return availability.get_text(strip=True)
+            else:
+                availability = availability_block.find('div', class_='delivery_count')
+                if availability != None:
+                    date = availability.get_text(strip=True)
+                    d = date.split(".")
+                    x = datetime.date(int(d[2]), int(d[1]), int(d[0]))
+                    res = x + datetime.timedelta(days=3)
+                    return res.strftime("%d-%m-%Y")
+        return None
+
     def get_content(self, html):
-        #todo if open valid page
         soap = BeautifulSoup(html, 'html.parser')
         modal_product_media_block = soap.find('div', class_='modal_product-media')
 
@@ -107,7 +125,7 @@ class Parser:
             breadcrumb_block = container.find('ul', class_='breadcrumb')
             description_block = container.find('div', class_='big-description')
             price_block = container.find('div', class_='price-box')
-            # modal_product_media_block = soap.find('div', class_='modal_product-media')
+            availability_block = container.find('div', class_='availability')
 
             product_name = container.find('div', class_='product-name').get_text() #todo
             breadcrumbs = self.get_breadcrumb(breadcrumb_block)
@@ -115,6 +133,7 @@ class Parser:
             description = self.get_description(description_block)
             price = self.get_price(price_block)
             images = self.get_images(modal_product_media_block)
+            availability = self.get_availability(availability_block)
 
             product = {
                 'name': product_name,
@@ -122,7 +141,8 @@ class Parser:
                 'description': description,
                 'price': price,
                 'characteristics': characteristics,
-                'images': images
+                'images': images,
+                'availability': availability
             }
 
             return product
