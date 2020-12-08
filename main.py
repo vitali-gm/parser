@@ -32,7 +32,7 @@ products = []
 parser = Parser()
 for url in URLS:
     product = parser.get_html(url)
-    print(product['availability'])
+    print(product['characteristics'])
     # products.append(product)
 
 # save_file(products, FILE)

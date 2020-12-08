@@ -2,3 +2,5 @@ __pycache__
 .DS_Store
 settings.ini
 ids.csv
+product.csv
+users.csv

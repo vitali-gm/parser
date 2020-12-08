@@ -25,7 +25,40 @@ def scan(ids):
 
     with open('product.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
-        headers_file = ['id', 'category1', 'category2', 'category3', 'category4', 'name', 'desc', 'regular_price', 'price', 'authot', 'edition', 'series_book', 'lang', 'publish_year', 'age', 'count_pages', 'illustrations']
+        headers_file = [
+            'id', 
+            'category1', 
+            'category2', 
+            'category3',
+            'category4', 
+            'name', 
+            'desc', 
+            'regular_price',
+            'price', 
+            'authot', 
+            'edition', 
+            'series_book', 
+            'lang', 
+            'publish_year', 
+            'first_publish_year', 
+            'translator', 
+            'age', 
+            'illustrator', 
+            'count_pages', 
+            'illustrations', 
+            'format', 
+            'binding', 
+            'paper', 
+            'circulation', 
+            'isbn',
+            'reference_publications', 
+            'weight', 
+            'type', 
+            'class', 
+            'literature', 
+            'literature_world', 
+            'literature_by_periods'
+            ]
         for i in range(30):
             headers_file.append('thumbnail' + str(i + 1))
         writer.writerow(headers_file)
@@ -39,8 +72,40 @@ def scan(ids):
             if product != None:
                 ch = product['characteristics']
                 breadcrumbs = product['breadcrumbs']
-                line_item = [id, get_breadcrumb(breadcrumbs, 2), get_breadcrumb(breadcrumbs, 3), get_breadcrumb(breadcrumbs, 4), get_breadcrumb(breadcrumbs, 5), product['name'], product['description'], product['price']['old_price'], product['price']['price'], ch.get('avtor', ''), ch.get('edition', ''), 
-                ch.get('series_book', ''), ch.get('lang', ''), ch.get('publish_year', ''), ch.get('age', ''), ch.get('count_pages', ''), ch.get('illustrations', '')]
+                line_item = [
+                    id, 
+                    get_breadcrumb(breadcrumbs, 2), 
+                    get_breadcrumb(breadcrumbs, 3), 
+                    get_breadcrumb(breadcrumbs, 4), 
+                    get_breadcrumb(breadcrumbs, 5), 
+                    product['name'], 
+                    product['description'], 
+                    product['price']['old_price'], 
+                    product['price']['price'], 
+                    ch.get('avtor', ''), 
+                    ch.get('edition', ''), 
+                    ch.get('series_book', ''), 
+                    ch.get('lang', ''), 
+                    ch.get('publish_year', ''),
+                    ch.get('first_publish_year', ''),  
+                    ch.get('translator', ''),  
+                    ch.get('age', ''), 
+                    ch.get('illustrator', ''), 
+                    ch.get('count_pages', ''), 
+                    ch.get('illustrations', ''),
+                    ch.get('format', ''),
+                    ch.get('binding', ''),
+                    ch.get('paper', ''),
+                    ch.get('circulation', ''),
+                    ch.get('isbn', ''),
+                    ch.get('reference_publications', ''),
+                    ch.get('weight', ''),
+                    ch.get('type', ''),
+                    ch.get('class', ''),
+                    ch.get('literature', ''),
+                    ch.get('literature_world', ''),
+                    ch.get('literature_by_periods', ''),
+                ]
 
                 for image in product['images']:
                     line_item.append(image)
