@@ -1,16 +1,22 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import time
 
 class Parser:
 
     headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36', 'accept': '*/*'}
 
     def get_html(self, url, params=None):
-        html = requests.get(url, headers=self.headers, params=params)
-        if html.status_code == 200:
-            return self.get_content(html.text)
-        return None
+        try:
+            html = requests.get(url, headers=self.headers, params=params)
+            if html.status_code == 200:
+                return self.get_content(html.text)
+            return None
+        except requests.exceptions.ConnectionError:
+            print('time sleep')
+            time.sleep(10)
+            return self.get_html(url, params=params)
         
     def get_breadcrumb(self, breadcrumb):
         breadcrumbs = []
