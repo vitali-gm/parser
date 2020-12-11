@@ -1,9 +1,9 @@
 import csv
-from parser import Parser
+from classes.parser import Parser
 
 
 URLS = ['https://www.yakaboo.ua/ua/german-picture-dictionary.html']
-FILE = 'product.csv'
+FILE = 'files/product.csv'
 
 def save_file(items, path):
     with open(path, 'w', newline='') as file:

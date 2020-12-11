@@ -1,10 +1,10 @@
 import requests
 import csv
-from parser_avtor import Parser
+from classes.parser_avtor import Parser
 
 
 def read_ids():
-    with open('ids.csv', newline='') as csvfile:
+    with open('files/ids.csv', newline='') as csvfile:
         ids = []
         spamreader = csv.reader(csvfile, delimiter=';')
         for row in spamreader:
@@ -14,7 +14,7 @@ def read_ids():
 def scan(ids):
     parser = Parser()
 
-    with open('avtors.csv', 'w', newline='', encoding='utf-8') as file:
+    with open('files/avtors.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
         headers_file = [
             'fullname',

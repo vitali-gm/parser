@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import datetime
 import time
 
-#todo refactor
 class Parser:
 
     headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36', 'accept': '*/*'}
@@ -18,16 +17,17 @@ class Parser:
             print('time sleep')
             time.sleep(10)
             return self.get_html(url, params=params)
-        except requests.exceptions.MissingSchema:
+        except (requests.exceptions.MissingSchema, requests.exceptions.ChunkedEncodingError):
             return None
     
     def get_content(self, html):
-        soap = BeautifulSoup(html, 'html.parser')
-        modal_product_media_block = soap.find('div', class_='modal_product-media')
+        if html != None:
+            soap = BeautifulSoup(html, 'html.parser')
+            modal_product_media_block = soap.find('div', class_='modal_product-media')
 
-        if modal_product_media_block != None:
-            container = soap.find('div', class_='wrapper')
-            return container.find('table', class_='product-attributes__table')
+            if modal_product_media_block != None:
+                container = soap.find('div', class_='wrapper')
+                return container.find('table', class_='product-attributes__table')
         return None
 
     def get_info(self, block):
@@ -83,7 +83,7 @@ class Parser:
             print('time sleep')
             time.sleep(10)
             return self.get_avtor(url)
-        except requests.exceptions.MissingSchema:
+        except (requests.exceptions.MissingSchema, requests.exceptions.ChunkedEncodingError):
             return None
 
     def get_avtors(self, url):

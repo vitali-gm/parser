@@ -40,7 +40,7 @@ if response_auth.status_code == 200:
 
     response = requests.get(URL, headers=headers)
     if response.status_code == 200:
-        with open('users.csv', 'w', newline='', encoding='utf-8') as file:
+        with open('files/users.csv', 'w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(['email', 'phone', 'status'])
             for book in response.json():

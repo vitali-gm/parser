@@ -1,12 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import math
-from parser import Parser
+from classes.parser import Parser
 import csv
 
 
 def read_ids():
-    with open('ids.csv', newline='') as csvfile:
+    with open('files/ids.csv', newline='') as csvfile:
         ids = []
         spamreader = csv.reader(csvfile, delimiter=';')
         for row in spamreader:
@@ -23,7 +23,7 @@ def scan(ids):
 
     parser = Parser()
 
-    with open('product.csv', 'w', newline='', encoding='utf-8') as file:
+    with open('files/product.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
         headers_file = [
             'id', 
