@@ -13,11 +13,11 @@ class Parser:
             if html.status_code == 200:
                 return html.text
             return None
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError):
             print('time sleep')
             time.sleep(10)
             return self.get_html(url, params=params)
-        except (requests.exceptions.MissingSchema, requests.exceptions.ChunkedEncodingError):
+        except requests.exceptions.MissingSchema:
             return None
     
     def get_content(self, html):
@@ -79,11 +79,11 @@ class Parser:
                         'images': images
                     }
             return None
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError):
             print('time sleep')
             time.sleep(10)
             return self.get_avtor(url)
-        except (requests.exceptions.MissingSchema, requests.exceptions.ChunkedEncodingError):
+        except requests.exceptions.MissingSchema:
             return None
 
     def get_avtors(self, url):
@@ -97,8 +97,8 @@ class Parser:
             for link_tag in links:
                 href = link_tag.get('href')
                 if not href in hrefs:
+                    hrefs.append(href)
                     avtor = self.get_avtor(href)
                     if avtor != None:
                         avtors.append(avtor)
-                    hrefs.append(href)
         return avtors
