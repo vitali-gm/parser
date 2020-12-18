@@ -90,14 +90,15 @@ class Parser:
         html = self.get_html(url)
         content = self.get_content(html)
         avtors = []
-        hrefs = []
+        names = []
         if content != None:
             attribute = content.find('tr')
             links = attribute.find_all('a')
             for link_tag in links:
                 href = link_tag.get('href')
-                if not href in hrefs:
-                    hrefs.append(href)
+                name = link_tag.get_text(strip=True)
+                if not name in names:
+                    names.append(name)
                     avtor = self.get_avtor(href)
                     if avtor != None:
                         avtors.append(avtor)
